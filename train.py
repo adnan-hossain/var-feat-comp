@@ -284,7 +284,7 @@ def get_config():
     # device setting
     parser.add_argument('--fixseed',    action='store_true')
     parser.add_argument('--workers',    type=int,  default=8)
-    parser.add_argument('--ddp_find',   action=argparse.BooleanOptionalAction, default=False)               
+    parser.add_argument('--ddp_find',   action=argparse.BooleanOptionalAction, default=False)
     cfg = parser.parse_args()
 
     # model
@@ -389,7 +389,7 @@ class TrainWrapper():
         model_func = get_model(cfg.model)                       # cfg.model = 'ours_n4'
         kwargs = dict(num_classes=cfg.num_classes)
         kwargs.update(eval(f'dict({cfg.model_args})'))
-        model = model_func(**kwargs)                            # model is a nn.module of type 'models.entropic_student.BottleneckResNet'      
+        model = model_func(**kwargs)                            # model is a nn.module of type 'models.entropic_student.BottleneckResNet'
         if self.is_main:
             print(f'Using model {type(model)}, args: {kwargs}', '\n')
         if cfg.pretrain: # (partially or fully) initialize from pretrained weights
@@ -476,7 +476,7 @@ class TrainWrapper():
             ckpt_path = log_dir / 'last.pt'
             checkpoint = torch.load(ckpt_path)
             # print(type(self.model))
-            self.model.module.load_state_dict(checkpoint['model'])                     
+            self.model.module.load_state_dict(checkpoint['model'])
             self.optimizer.load_state_dict(checkpoint['optimizer'])
             # self.aux_optimizer.load_state_dict(checkpoint['aux_optimizer'])
             self.scaler.load_state_dict(checkpoint['scaler'])
@@ -726,7 +726,7 @@ class TrainWrapper():
                 'model'     : _eval_model.state_dict(),
                 'optimizer' : self.optimizer.state_dict(),
                 # 'aux_optimizer' : self.aux_optimizer.state_dict(),
-                # 'aux_scaler' : self.aux_scaler.state_dict(), 
+                # 'aux_scaler' : self.aux_scaler.state_dict(),
                 'scaler'    : self.scaler.state_dict(),
                 'epoch'     : epoch,
                 'results'   : results,
@@ -765,14 +765,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-    # p_z = torch.rand((128, 64, 28, 28))
-    # lmb = 1.28
-    # # -1.0 * torch.log2(p_z).mean(0).sum() / float(imH * imW)
-    # print(p_z.shape)
-    # print(torch.log2(p_z).shape)
-    # print(torch.log2(p_z).mean(0).shape)
-    # print((-1*torch.log2(p_z).mean(0).sum()/float(256*256))*lmb) 
-
-    # lmb = torch.tensor([1.28]).expand(128)
-
-    # print(((-1*torch.log2(p_z).sum(dim=(1,2,3))/float(256*256))*lmb).mean(0))
