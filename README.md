@@ -1,4 +1,4 @@
-# var-feat-comp
+## Flexible Variable-Rate Image Feature Compression for Edge-Cloud Systems
 
 ## Required packages
 numpy\
